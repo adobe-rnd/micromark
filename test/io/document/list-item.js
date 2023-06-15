@@ -18,6 +18,46 @@ test('list-item', function () {
   )
 
   assert.equal(
+    micromark(`
+2. a
+   1. aa
+   2. ab
+3. b
+`),
+    `<ol start="2">
+<li>a
+<ol>
+<li>aa</li>
+<li>ab</li>
+</ol>
+</li>
+<li>b</li>
+</ol>
+`,
+    'should support nested ordered lists'
+  )
+
+  assert.equal(
+    micromark(`
+2. a
+   3. aa
+   4. ab
+3. b
+`),
+    `<ol start="2">
+<li>a
+<ol start="3">
+<li>aa</li>
+<li>ab</li>
+</ol>
+</li>
+<li>b</li>
+</ol>
+`,
+    'should support nested ordered lists not starting at 1'
+  )
+
+  assert.equal(
     micromark('- one\n\n two'),
     '<ul>\n<li>one</li>\n</ul>\n<p>two</p>',
     'should not support 1 space for a two-character list prefix'
